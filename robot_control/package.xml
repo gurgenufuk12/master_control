@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>robot_control</name>
+  <version>0.0.1</version>
+  <description>ROS package for robot control</description>
+  <maintainer email="your_email@example.com">Your Name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rospy</build_depend>
+  <exec_depend>rospy</exec_depend>
+
+  <!-- Add mqtt_client.py as a dependency -->
+  <build_depend>mqtt_client</build_depend>
+  <exec_depend>mqtt_client</exec_depend>
+
+  <export>
+  </export>
+</package>

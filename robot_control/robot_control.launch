@@ -1,0 +1,5 @@
+<launch>
+  <node name="robot_control_node" pkg="robot_control" type="RobotControl.py" output="screen">
+    <param name="robot_name" value="robot2" />
+  </node>
+</launch>
