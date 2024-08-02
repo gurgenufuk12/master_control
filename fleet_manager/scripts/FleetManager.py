@@ -60,7 +60,44 @@ class FleetManager:
 
         if idle_robots:
             chosen_robot = idle_robots[0]
-            #rospy.loginfo(f"Assigning task to robot: {chosen_robot['robotName']}")
+            rospy.loginfo(f"Assigning task to robot: {chosen_robot['robotName']}")
+            updated_robot = {
+            "Task": {
+                "taskCode": task_data['Task']['taskCode'],
+                "taskName": task_data['Task']['taskName'],
+                "taskId": task_data['Task']['taskId'],
+                "taskPriority": task_data['Task']['taskPriority'],
+                "taskPercentage": "0",
+                "pathPoints": [], 
+            },
+            "Targets": task_data['Targets'],
+            "robotStatus": "Task In Progress",
+            }
+
+            updated_Task ={
+                "robotName": chosen_robot['robotName'],
+            }
+
+            rospy.loginfo(f"Task to be updated: {task_data['Task']['taskId']}")
+            task_id = task_data['Task']['taskId']
+
+            robot_update_result= self.robot_collection.update_one(
+                {"robotName": chosen_robot['robotName']},
+                {"$set": updated_robot}
+            )
+            if robot_update_result.matched_count > 0:
+                rospy.loginfo(f"Successfully updated robot {chosen_robot['robotName']} with new task")
+            else:
+                rospy.logerr(f"Failed to update robot {chosen_robot['robotName']} with new task")
+
+            task_update_result = self.task_collection.update_one(
+                {"Task.taskId": task_id},
+                {"$set": updated_Task}
+            )
+            if task_update_result.matched_count > 0:
+                rospy.loginfo(f"Successfully updated task with taskId: {task_id}")
+            else:
+                rospy.logerr(f"Failed to update task with taskId: {task_id}. Task not found.")
 
             task_message = {
                 "task": task_data,
